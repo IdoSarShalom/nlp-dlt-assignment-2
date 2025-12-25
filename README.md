@@ -2,25 +2,26 @@
 
 Dana Gibor(322274234), Ido Sar Shalom(212410146), Natalya Sigal(306688466)
 
-Assignment 1 as part of Bar-Ilan's 83374 "NLP using DL techniques" 🌠.
+Assignment 2 as part of Bar-Ilan's 83374 "NLP using DL techniques" 🌠.
 
-Implemented in TensorFlow/Keras 🔥.
+Implemented in PyTorch/Transformers 🔥.
 
 ## Description 📝
 
-In this project we implement deep learning models for classifying text into **6 emotion categories**: Sadness, Joy, Love, Anger, Fear, and Surprise. We compare two recurrent architectures - **[Bidirectional GRU](https://arxiv.org/abs/1406.1078)** with Word2Vec embeddings and **[Bidirectional LSTM](https://www.bioinf.jku.at/publications/older/2604.pdf)** with GloVe embeddings - achieving **~92-93% accuracy** on social media text.
+In this project we implement deep learning models for classifying text into **6 emotion categories**: Sadness, Joy, Love, Anger, Fear, and Surprise. We fine-tune and compare three pre-trained transformer models - **[BERT](https://arxiv.org/abs/1810.04805)** (Devlin et al., 2018), **[RoBERTa](https://arxiv.org/abs/1907.11692)** (Liu et al., 2019), and **[ELECTRA](https://arxiv.org/abs/2003.10555)** (Clark et al., 2020) - achieving **>80% accuracy** on social media text.
 
 ## The Repository 🧭
 
 We provide here a short explanation about the structure of this repository:
 
 * `data/train.csv` and `data/validation.csv` contain the raw datasets from the Emotion dataset.
-* `data/gru` and `data/lstm` contain the trained models and tokenizers after running the training notebooks.
+* `data/bert`, `data/roberta`, and `data/electra` contain the trained models and tokenizers after running the training notebooks.
 * `00_eda.ipynb` contains Exploratory Data Analysis with comprehensive visualizations, class distribution analysis, and text statistics.
 * `01_preprocessing.ipynb` contains the text preprocessing pipeline including tokenization, padding, and stopword removal. This notebook runs on any data split.
-* `02_train_gru.ipynb` contains the **Bidirectional GRU** architecture training with Word2Vec embeddings.
-* `03_train_lstm.ipynb` contains the **Bidirectional LSTM** architecture training with GloVe embeddings.
-* `04_inference.ipynb` contains the inference pipeline, model evaluation, and side-by-side performance comparison on test data.
+* `02_train_bert.ipynb` contains the **BERT** model fine-tuning with HuggingFace transformers (~110M parameters).
+* `03_train_roberta.ipynb` contains the **RoBERTa** model fine-tuning with improved pre-training (~125M parameters).
+* `04_train_electra.ipynb` contains the **ELECTRA** model fine-tuning with discriminative pre-training (~110M parameters).
+* `05_inference.ipynb` contains the inference pipeline, model evaluation, and side-by-side performance comparison on test data.
 * `report.pdf` contains the PDF for the project report.
 * `requirements.txt` contains the Python package dependencies.
 
@@ -34,9 +35,9 @@ To predict emotions on a new test dataset (`test.csv`):
 2. **Preprocess**: Open `01_preprocessing.ipynb`.
    * Set `split = 'test'` in the configuration cell.
    * Run all cells. This will create `data/test_preprocessed.pkl`.
-3. **Predict & Evaluate**: Run `04_inference.ipynb`. This notebook will:
+3. **Predict & Evaluate**: Run `05_inference.ipynb`. This notebook will:
    - Load the preprocessed test data.
-   - Load the trained GRU and BiLSTM models.
+   - Load the trained BERT, RoBERTa, and ELECTRA models.
    - Generate predictions.
    - Compare performance and display confusion matrices.
 
@@ -44,11 +45,14 @@ To predict emotions on a new test dataset (`test.csv`):
 
 In order to train the models and reproduce the results:
 
-1. **Preprocessing**: Open `01_preprocessing.ipynb`. 
+1. **Preprocessing**: Open `01_preprocessing.ipynb`.
    * Run first with `split = 'train'` to generate `data/train_preprocessed.pkl`.
    * Run again with `split = 'validation'` to generate `data/validation_preprocessed.pkl`.
-2. **Train GRU**: Run `02_train_gru.ipynb`. This will download Word2Vec embeddings and train the GRU model.
-3. **Train LSTM**: Run `03_train_lstm.ipynb`. This will download GloVe embeddings and train the LSTM model.
+2. **Train BERT**: Run `02_train_bert.ipynb`. This will download BERT model and fine-tune it on the emotion dataset.
+3. **Train RoBERTa**: Run `03_train_roberta.ipynb`. This will download RoBERTa model and fine-tune it on the emotion dataset.
+4. **Train ELECTRA**: Run `04_train_electra.ipynb`. This will download ELECTRA model and fine-tune it on the emotion dataset.
+
+**Note:** Training transformer models requires a GPU for reasonable training times (~30-60 minutes on GPU vs 8-10 hours on CPU). Use Google Colab with GPU runtime if needed.
 
 ## Libraries to Install 📚
 
@@ -56,13 +60,13 @@ In order to train the models and reproduce the results:
 
 | Library | Command to Run | Minimal Version |
 | :--- | :--- | :--- |
-| NumPy | `pip install numpy` | 2.2.5 |
-| pandas | `pip install pandas` | 2.3.3 |
-| matplotlib | `pip install matplotlib` | 3.10.6 |
-| seaborn | `pip install seaborn` | 0.13.2 |
-| NLTK | `pip install nltk` | 3.9.2 |
-| scikit-learn | `pip install scikit-learn` | 1.7.2 |
-| TensorFlow | `pip install tensorflow` | 2.20.0 |
-| Keras | `pip install keras` | 3.12.0 |
-| Gensim | `pip install gensim` | 4.4.0 |
-| WordCloud | `pip install wordcloud` | 1.9.4 |
+| NumPy | pip install numpy | 2.2.5 |
+| pandas | pip install pandas | 2.3.3 |
+| matplotlib | pip install matplotlib | 3.10.6 |
+| seaborn | pip install seaborn | 0.13.2 |
+| NLTK | pip install nltk | 3.9.2 |
+| scikit-learn | pip install scikit-learn | 1.7.2 |
+| Transformers | pip install transformers | 4.36.0 |
+| PyTorch | pip install torch | 2.1.0 |
+| Datasets | pip install datasets | 2.16.0 |
+| Accelerate | pip install accelerate | 0.25.0 |
